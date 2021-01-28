@@ -1,0 +1,90 @@
+<div class="container">
+  <div
+    class="blog-post padding-bottom-20"
+    *ngFor="let save of saves; let i = index"
+  >
+    <!-- Blog Item Header -->
+    <div class="blog-item-header">
+      <!-- Date -->
+      <div class="blog-post-date pull-left">
+        <span class="day"> {{ save.post.created_at | date: "dd" }}</span>
+        <span class="month"> {{ save.post.created_at | date: "MMM" }}</span>
+      </div>
+      <!-- End Date -->
+      <!-- Title -->
+      <h2>
+        <a [href]="'/therapist/' + save.post.user.id"
+        >Dr. {{ save.post.user.first_name }} {{ save.post.user.last_name }}</a>
+      </h2>
+      <div class="clearfix"></div>
+      <!-- End Title -->
+    </div>
+    <!-- End Blog Item Header -->
+    <!-- Blog Item Details -->
+    <div class="blog-post-details">
+      <div
+        class="blog-post-details-item blog-post-details-item-left user-icon">
+        <a class="btn " style="padding: 0px;" (click)="like(save.post.id, i)">
+          <div *ngIf="save.post.liked">
+            <i class="glyphicon glyphicon-thumbs-up" style="color: #00b3ee"></i>
+          </div>
+          <div *ngIf="!save.post.liked">
+            <i class="glyphicon glyphicon-thumbs-up"></i>
+          </div>
+        </a>
+        <a href="#"> {{ save.post.likes_count }} Liked</a>
+
+      </div>
+
+
+      <!-- # of Comments -->
+      <div
+        class="blog-post-details-item blog-post-details-item-left blog-post-details-item-last comments-icon"
+      >
+        <a href="#">
+          <i class="fa fa-comments"></i>
+          {{ save.post.comments_count }} Comments
+        </a>
+      </div>
+      <!-- End # of Comments -->
+         </div>
+    <!-- End Blog Item Details -->
+    <!-- Blog Item Body -->
+    <div class="blog">
+      <div class="clearfix"></div>
+      <div class="blog-post-body row margin-top-15">
+        <div *ngIf="save.post.media_url">
+          <div class="col-md-5">
+            <img
+              width="200px"
+              height="200px"
+              style="object-fit: contain"
+              class="pull-left"
+              [src]="'http://localhost:8000/storage/media/' + save.post.media_url"
+              alt="thumb1"
+            />
+          </div>
+        </div>
+        <div class="col-md-7">
+          <p>
+            {{ save.post.caption }}
+          </p>
+          <!-- Read More -->
+          <a [href]="'/singlePost/' + save.post.id" class="btn btn-primary">
+            Read More <i class="icon-chevron-right readmore-icon"></i>
+          </a>
+          <a (click)="savePost(save.post.id, i)" style="margin: 10px;">
+              <span *ngIf="save.post.saved; else elseUnsave">
+                <i class="glyphicon glyphicon-saved"></i>
+                </span>
+            <ng-template #elseUnsave>
+              <i class="glyphicon glyphicon-save"></i>
+            </ng-template>
+          </a>
+          <!-- End Read More -->
+        </div>
+      </div>
+    </div>
+    <!-- End Blog Item Body -->
+  </div>
+</div>

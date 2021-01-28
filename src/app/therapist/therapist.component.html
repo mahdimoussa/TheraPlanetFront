@@ -1,0 +1,412 @@
+<div class="container padding-vert-30">
+  <div *ngIf="loading">
+    <h1>Loading...</h1>
+  </div>
+  <div *ngIf="!loading">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="pull-left">
+          <div *ngIf="user.profile_pic; else elseBlock ">
+            <img
+              class="pull-left"
+              width="200"
+              height="200"
+              [src]="'http://localhost:8000/storage/media/' + user.profile_pic"
+              alt="image1"
+            />
+          </div>
+          <ng-template #elseBlock>
+            <img
+              class="pull-left"
+              width="200"
+              height="200"
+              [src]="'http://localhost:8000/storage/media/t3.jpg'"
+              alt="image1"
+            />
+          </ng-template>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div style="font-weight: bold;" class="row">
+          <h2>{{user.first_name}} {{user.last_name}}</h2>
+        </div>
+        <br>
+        <div style="font-weight: bold;" class="row">
+          <h3>E-mail: {{user.email}}</h3>
+        </div>
+        <br>
+        <div style="font-weight: bold;" class="row">
+          <h3>Phone: {{user.phone_number}}</h3>
+        </div>
+        <br>
+        <div style="font-weight: bold;" class="row">
+          <h3>Location: {{user['location']}}</h3>
+        </div>
+        <br>
+        <div style="font-weight: bold;" class="row">
+          <h3>Bio: {{user.biography}}</h3>
+        </div>
+        <br>
+        <div *ngIf="id == currentUser.id; else notMyProfile">
+          <button style="margin-left: -61%;" class="btn btn-outline-primary" (click)="openModal()">Edit Profile</button>
+        </div>
+        <ng-template #notMyProfile>
+          <div>
+            <button style="margin-left: -61%;" class="btn btn-info" (click)="openNewMessage()">Message Now</button>
+          </div>
+        </ng-template>
+        <button style="margin-left: -61%; margin-top: 5px;width: 114px;" routerLink="/user-calendar" class="btn btn-red">Appointments</button>
+      </div>
+    </div>
+    <div class="row">
+      <h3 class="margin-vert-60" style="font-weight: bold">Reviews:</h3>
+      <div *ngIf="reviews.length > 0">
+      <div *ngFor="let review of reviews">
+        <img style="margin-bottom: -14%;margin-left: 1%;"
+        [src]="'http://localhost:8000/storage/media/default_profile.png'"
+        width="116px"
+        height="116px"
+      />
+        <li style="font-weight: bold; margin-left: 12%; " class="list-group-item content_background">
+        <br> {{review.review}}
+          <br>
+          <br>
+          <star-rating [value]=review.rating totalstars="5" checkedcolor="red" uncheckedcolor="black" size="24px" readonly="false"></star-rating>
+
+        </li>
+      </div>
+      </div>
+      <div *ngIf="reviews.length <= 0">
+        <h4 style="margin-top: -4.5%;" >No Reviews Yet!</h4>
+      </div>
+      <div *ngIf="reviewed == false && currentUser.id != id">
+        <div class="row margin-bottom-20">
+          <div class="col-md-11 col-md-offset-0"><textarea [(ngModel)]="reviewMessage" class="form-control"  rows="8"></textarea>
+          </div>
+        </div>
+        <h3 class="margin-vert-10">Rating:</h3>
+
+        <star-rating [value]="0" [totalstars]="5" checkedcolor="red" uncheckedcolor="black" size="24px" readonly="false" (rate)="onRate($event)"></star-rating>
+
+        <p>
+          <button class="btn btn-primary" (click)="addReview()">
+            Add Review
+          </button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <h3 style="font-weight: bold;">Posts:</h3>
+      <br>
+      <div *ngIf="posts.length > 0; else emptyPosts">
+        <div
+          class="blog-post padding-bottom-20"
+          *ngFor="let post of posts; let i = index"
+        >
+          <!-- Blog Item Header -->
+          <div class="blog-item-header">
+            <!-- Date -->
+            <div class="blog-post-date pull-left">
+              <span class="day"> {{ post.created_at | date: "dd" }}</span>
+              <span class="month"> {{ post.created_at | date: "MMM" }}</span>
+            </div>
+            <!-- End Date -->
+            <!-- Title -->
+            <h2>
+              <a [href]="'/therapist/' + post.user.id"
+              >{{ post.user.first_name }} {{ post.user.last_name }}</a>
+            </h2>
+            <div class="clearfix"></div>
+            <!-- End Title -->
+          </div>
+          <!-- End Blog Item Header -->
+          <!-- Blog Item Details -->
+          <div class="blog-post-details">
+            <div
+              class="blog-post-details-item blog-post-details-item-left user-icon">
+              <a class="btn " style="padding: 0px;" (click)="like(post.id, i)">
+                <div *ngIf="post.liked">
+                  <i class="glyphicon glyphicon-thumbs-up" style="color: #00b3ee"></i>
+                </div>
+                <div *ngIf="!post.liked">
+                  <i class="glyphicon glyphicon-thumbs-up"></i>
+                </div>
+              </a>
+              <a> {{ post.likes_count }} Liked</a>
+
+            </div>
+
+
+            <!-- # of Comments -->
+            <div
+              class="blog-post-details-item blog-post-details-item-left blog-post-details-item-last comments-icon"
+            >
+              <a href="#">
+                <i class="fa fa-comments"></i>
+                {{ post.comments_count }} Comments
+              </a>
+            </div>
+            <!-- End # of Comments -->
+            <!-- Tags -->
+            <div
+              class="blog-post-details-item blog-post-details-item-left blog-post-details-tags tags-icon"
+            >
+              <i class="fa fa-tag"></i>
+              <a *ngFor = "let tag of post.tags"> {{tag.label}}</a>
+            </div>
+            <!-- End Tags -->
+          </div>
+          <!-- End Blog Item Details -->
+          <!-- Blog Item Body -->
+          <div class="blog">
+            <div class="clearfix"></div>
+            <div class="blog-post-body row margin-top-15">
+              <div *ngIf="post.media_url">
+                <div class="col-md-5">
+                  <div *ngIf="fileNames[i] == ( 'mp4' || 'MOV ' || 'WMV' || 'FLV' || 'AVI'); else elseImage">
+
+                    <video
+                      width="200px"
+                      height="200px"
+                      style="object-fit: contain"
+                      class="pull-left"
+                      controls
+                    >
+                      <source [src]="'http://localhost:8000/storage/media/' + post.media_url" type="video/mp4">
+                    </video>
+
+                  </div>
+                  <ng-template #elseImage>
+                    <img
+                      width="200px"
+                      height="200px"
+                      style="object-fit: contain"
+                      class="pull-left"
+                      [src]="'http://localhost:8000/storage/media/' + post.media_url"
+                      alt="thumb1"
+                    />
+                  </ng-template>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <p>
+                  {{ (post.caption.length > 50) ? (post.caption | slice:0:400) + '....' : (post.caption) }}
+                </p>
+                <!-- Read More -->
+                <a [href]="'/singlePost/' + post.id" class="btn btn-primary">
+                  Read More <i class="icon-chevron-right readmore-icon"></i>
+                </a>
+                <br>
+                <br>
+                <div *ngIf="id == currentUser.id" >
+                  <button class="btn btn-danger" (click)="deletePost(post.id)" >Delete</button>
+                  <button  class="btn btn-info" style="margin-left: 5px;" (click)="openEditPost(post)" > Edit</button>
+                </div>
+                <!-- End Read More -->
+              </div>
+            </div>
+          </div>
+          <!-- End Blog Item Body -->
+        </div>
+      </div>
+      <ng-template #emptyPosts>
+        <div style="font-weight: bold;"> <h4>No posts available</h4> </div>
+      </ng-template>
+    </div>
+
+
+    <div id="edit" *ngIf="editClicked">
+      <div id="edit-user-profile-modal" class="modal fade in tabs-dark color color-blue" aria-hidden="false"
+          style="height: 600px; width: 500px; display: block; position: absolute;background-color: white; ">
+
+        <div class="modal-header">
+          <h2 style="color:black;" class="modal-title" id="modal-basic-title">Edit Profile</h2>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              class="form-control"
+              [(ngModel)]="userModel.email"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input
+              id="first_name"
+              type="text"
+              class="form-control"
+              [(ngModel)]="userModel.first_name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input
+              id="last_name"
+              type="text"
+              class="form-control"
+              [(ngModel)]="userModel.last_name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input
+              id="phone_number"
+              type="text"
+              class="form-control"
+              [(ngModel)]="userModel.phone_number"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phone_number">Location</label>
+            <input
+              id="location"
+              type="text"
+              class="form-control"
+              [(ngModel)]="userModel.location"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Biography</label>
+            <textarea
+              rows="4"
+              class="form-control"
+              name="biography"
+              [(ngModel)]="userModel.biography"
+            ></textarea>
+            <br>
+            <label for="file">
+              <img
+                src="assets/img/upload.png"
+                width="50px"
+                height="50px"
+                style="margin-right: 10px"
+              />
+              <input
+                type="file"
+                id="file"
+                style="display: none"
+                (change)="handleFileInput($event.target.files)"
+              />Change Profile Picture
+            </label>
+          </div>
+          <div class="form-group">
+            <button [disabled]="loading" (click)="updateProfile()" class="btn btn-primary">
+              Save Changes
+            </button>
+            <button [disabled]="loading" (click)="closeEditProfile()" class="btn btn-secondary margin-horiz-10">
+              Cancel
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showNewMessage">
+    <div class="modal fade in tabs-dark color color-blue" aria-hidden="false"
+    style="height: 600px;margin: 65%; margin-top: 12%;border-radius: 8px; height: 180px; width: 500px; display: block; position: absolute;background-color: white; ">
+      <div class="modal-header">
+        <h4 class="modal-title">Send Your Message Anonymously</h4>
+        <button type="button" class="close" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            class="form-control"
+            [(ngModel)]="message"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <button [disabled]="loading" (click)="sendMessage()" class="btn btn-primary">
+            Send
+          </button>
+          <button [disabled]="loading" (click)="closeNewMessage()" class="btn btn-secondary margin-horiz-10">
+            Cancel
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+    <div *ngIf="showEditPost">
+      <div class="modal fade in tabs-dark color color-blue" aria-hidden="false"
+      style="border-radius: 8px; height: 460px; width: 31%;margin: 70%;margin-top: 73%; display: block; position: absolute ;background-color: rgba(255, 255, 255, 0.747); ">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Post</h4>
+          <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true"><a (click)="closeEditPost()">&times;</a></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row margin-bottom-20">
+            <div class="col-md-8 col-md-offset-2">
+        <textarea
+          rows="8"
+          class="form-control"
+          name="caption"
+          [(ngModel)]="editedPost.caption"
+        ></textarea>
+            </div>
+          </div>
+          <div class="row margin-bottom-20">
+            <div class="col-md-8 col-md-offset-2">
+              <div class="form-group">
+                <label>Edit Tags</label>
+                <select class="form-control" name="tgs" [(ngModel)]="editedPost.tag">
+                  <option *ngFor="let tag of tags" [value]="tag.id" >{{ tag.label }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row margin-bottom-20">
+            <div class="col-md-8 col-md-offset-2">
+              <label for="file">
+                <img
+                  src="assets/img/upload.png"
+                  width="50px"
+                  height="50px"
+                  style="margin-right: 10px"
+                />
+                <input
+                style="width:50%"
+                  type="file"
+                  style="display: none"
+                  (change)="handlePostInput($event.target.files)"
+                />Choose File</label>
+            </div>
+          </div>
+          <div class="col-md-8 col-md-offset-2">
+            <p>
+              <button class="btn btn-primary" (click)="updatePost()" style="float: right">
+                Save Changes
+              </button>
+              <button [disabled]="loading" (click)="closeEditPost()" class="btn btn-secondary margin-horiz-10">
+                Cancel
+              </button>
+
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

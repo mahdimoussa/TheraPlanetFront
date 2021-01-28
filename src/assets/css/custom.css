@@ -1,0 +1,21 @@
+.offline-status {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: grey;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+
+.online-status {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: lawngreen;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}

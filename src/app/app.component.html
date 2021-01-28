@@ -1,0 +1,263 @@
+<div id="pre_header" class="visible-lg"></div>
+<div id="header" class="container" *ngIf="currentUser">
+  <div class="row">
+    <!-- Logo -->
+    <div class="logo">
+      <a href="/" title="">
+        <img width="17%" height="17%" src="http://localhost:8000/storage/media/logo.png" alt="Logo" />
+      </a>
+    </div>
+    <!-- End Logo -->
+    <!-- Top Menu -->
+    <div class="col-md-12 margin-top-30">
+      <div id="hornav" class="pull-right visible-lg">
+        <ul class="nav navbar-nav">
+
+          <li *ngIf="currentUser.type === 'Therapist'">
+            <a href="/createPost">Create post</a>
+          </li>
+          <li *ngIf="currentUser.type === 'Therapist'; else elseUser"><a [href]="'/therapist/'+currentUser.id">Profile</a></li>
+          <ng-template #elseUser><li><a [href]="'/profile'">Profile</a></li></ng-template>
+          <li *ngIf="currentUser.type === 'Therapist'"><a href="/calendar">Appointments</a></li>
+          <li><a href="/saved">Saved</a></li>
+          <li><a href="/messages" >Messages</a></li>
+          <li><a href="#" (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <!-- End Top Menu -->
+  </div>
+</div>
+<!-- === END HEADER === -->
+
+<div id="content" class="container">
+  <alert></alert>
+  <router-outlet></router-outlet>
+</div>
+
+
+
+<!-- Footer -->
+<div id="base"  *ngIf="currentUser && homePage()" >
+  <div class="container padding-vert-30">
+    <div class="row">
+      <!-- Thumbs Gallery -->
+      <div class="col-md-3 margin-bottom-20">
+        <h3 class="margin-bottom-10">Portfolio Highlights</h3>
+        <div class="thumbs-gallery">
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/t1.jpg"
+          >
+            <img style="height: 50px; width: 50px;"
+              src="http://localhost:8000/storage/media/t1.jpg"
+              alt="image1.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/p1.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/p1.jpg"
+              alt="image2.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/p2.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/p2.jpg"
+              alt="image3.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/p3.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/p3.jpg"
+              alt="image4.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/t3.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/t3.jpg"
+              alt="image6.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/t4.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/t4.jpg"
+              alt="image7.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/t5.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/t5.jpg"
+              alt="image8.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/t6.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/t6.jpg"
+              alt="image9.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/t7.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/t7.jpg"
+              alt="image92.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/p3.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/p3.jpg"
+              alt="image94.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/p4.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/p4.jpg"
+              alt="image95.jpg" />
+            <i></i
+          ></a>
+
+          <a
+            class="thumbBox"
+            rel="lightbox-thumbs"
+            href="http://localhost:8000/storage/media/p1.jpg"
+          >
+            <img
+            style="height: 50px; width: 50px;"
+            src="http://localhost:8000/storage/media/p1.jpg"
+              alt="image96.jpg" />
+            <i></i
+          ></a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <!-- End Thumbs Gallery -->
+      <!-- Contact Details -->
+      <div class="col-md-3 margin-bottom-20">
+        <h3 class="margin-bottom-10">Contact Details</h3>
+        <p>
+          Email: <a href="mailto:info@website.com">mahdi.m.moussa@gmail.com</a><br /><br />
+          Website: <a href="http://www.website.com/">www.website.com</a><br /><br />
+          LinkedIn: <a href="http://www.website.com/">https://www.linkedin.com</a><br/><br />
+          Twitter: <a href="www.test.com">www.twitter.com</a>
+
+        </p>
+      </div>
+      <!-- End Contact Details -->
+      <!-- Sample Menu -->
+      <div class="col-md-3 margin-bottom-20">
+        <h3 class="margin-bottom-10">Our Partners</h3>
+        <ul class="menu">
+          <li>
+            <a class="fa-tasks" href="#">Placerat facer possim</a>
+          </li>
+          <li>
+            <a class="fa-users" href="#">Quam nunc putamus</a>
+          </li>
+          <li>
+            <a class="fa-signal" href="#">Velit esse molestie</a>
+          </li>
+          <li>
+            <a class="fa-coffee" href="#">Nam liber tempor</a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <!-- End Sample Menu -->
+      <!-- Disclaimer -->
+      <div class="col-md-3 margin-bottom-20">
+        <h3 class="margin-bottom-10">About</h3>
+        <p>
+          Theraplanet is designed to enhance the communication between therapists and superheroes with disabilities like  Down Syndrome, Autism, Aphasia, and more.
+        </p>
+        <div class="clearfix"></div>
+      </div>
+      <!-- End Disclaimer -->
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+
+<div id="footer"  *ngIf="currentUser  && homePage()">
+  <div class="container">
+    <div class="row">
+      <div id="copyright" class="col-md-4">
+        <p>Designed by: Mahdi Moussa</p>
+      </div>
+      <div id="footermenu" class="col-md-8">
+        <ul class="list-unstyled list-inline pull-right">
+          <li>
+            <a href="https://www.linkedin.com/" target="_blank">Facebook</a>
+          </li>
+          <li>
+            <a href="https://www.google.com/gmail/" target="_blank">Instagram</a>
+          </li>
+          <li>
+            <a href="https://github.com/" target="_blank">Twitter</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Footer -->

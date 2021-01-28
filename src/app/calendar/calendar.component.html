@@ -1,0 +1,72 @@
+
+<div class="calendar-container" *ngIf="events">
+    <div class="row mt-4">
+        <div class="col-md-4 text-left">
+        </div>
+        <div class="col-md-4 text-center">
+            <h3 style="margin-top: 10px;" class="mt-0">{{ viewDate | calendarSchedulerDate:(view + 'ViewTitle'):locale:weekStartsOn:excludeDays:viewDays:startsWithToday }}</h3>
+
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="row">
+                <div class="col-6 d-md-none d-xl-flex col-xl-6 valign-center text-right">
+
+                </div>
+                <div class="col-6 col-md-12 col-xl-6">
+                    <div class="btn-group m-1" role="group">
+                        <button style="width: 100px; margin-top: 5px;" type="button" class="btn btn-primary"
+                                mwlCalendarPreviousView
+                                [view]="view"
+                                [(viewDate)]="viewDate"
+                                [daysInWeek]="viewDays"
+                                [excludeDays]="excludeDays"
+                                [disabled]="prevBtnDisabled"
+                                (viewDateChange)="dateOrViewChanged()">
+                              Back
+                        </button>
+
+                        <button style="width: 100px; margin-top: 5px;" type="button" class="btn btn-primary"
+                                mwlCalendarNextView
+                                [view]="view"
+                                [(viewDate)]="viewDate"
+                                [daysInWeek]="viewDays"
+                                [excludeDays]="excludeDays"
+                                [disabled]="nextBtnDisabled"
+                                (viewDateChange)="dateOrViewChanged()">
+                              Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  <br>
+  <div [ngSwitch]="view">
+        <calendar-scheduler-view *ngSwitchCase="CalendarView.Week"
+                                [viewDate]="viewDate"
+                                [events]="events"
+                                [locale]="locale"
+                                [forceViewDays]="forceViewDays"
+                                [weekStartsOn]="weekStartsOn"
+                                [excludeDays]="excludeDays"
+                                [startsWithToday]="startsWithToday"
+                                [hourSegments]="hourSegments"
+                                [dayStartHour]="dayStartHour"
+                                [dayEndHour]="dayEndHour"
+                                [dayModifier]="dayModifier"
+                                [hourModifier]="hourModifier"
+                                [segmentModifier]="segmentModifier"
+                                [eventModifier]="eventModifier"
+                                [showEventActions]="true"
+                                [showSegmentHour]="true"
+                                [zoomEventOnHover]="true"
+                                (viewDaysChanged)="viewDaysChanged($event)"
+                                (dayHeaderClicked)="dayHeaderClicked($event.day)"
+                                (hourClicked)="hourClicked($event.hour)"
+                                (segmentClicked)="segmentClicked('Clicked', $event.segment)"
+                                (eventClicked)="eventClicked('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)"
+                                [refresh]="refresh">
+        </calendar-scheduler-view>
+    </div>
+</div>

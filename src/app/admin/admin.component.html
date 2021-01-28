@@ -1,0 +1,47 @@
+<div class="row">
+
+<div class="container">
+  <h1>Accept Therapists</h1>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th class="col-md-3">Licence Photo</th>
+      <th class="col-md-3">ID Photo</th>
+      <th class="col-md-1" > </th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let document of documents">
+        <td>
+          <a [href]="'http://localhost:8000/storage/media/' + document.license_photo" target="_blank">
+            <img
+            width="100%"
+            style="height:200px;object-fit: contain;"
+            [src]="'http://localhost:8000/storage/media/' + document.license_photo"
+            alt="thumb1"
+          />
+          </a>
+
+        </td>
+
+        <td>
+          <a [href]="'http://localhost:8000/storage/media/' + document.id_photo" target="_blank">
+          <img
+            width="100%"
+            style="height:200px;object-fit: contain;"
+            [src]="'http://localhost:8000/storage/media/' + document.id_photo"
+            alt="thumb1"
+          />
+          </a>
+        </td>
+        <td>
+          <button class="btn btn-info" style="margin-left: 25%; width: 50%;margin:5px " (click)="accept(document.id)">Accept</button>
+          <button class="btn btn-danger" style="margin-left: 25%; width: 50%;margin:5px  " (click)="delete(document.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

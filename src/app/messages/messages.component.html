@@ -1,0 +1,68 @@
+<!-- <div class="container">
+  <div *ngIf="!loading; else elseLoading">
+  <div class="row margin-vert-60">
+    <div class="col-md-4">
+      <ul class="list-group" >
+        <li class="list-group-item color-blue" (click)="chatSelected(i)" [style]="selectedIndex == i ? 'background-color: #00b3ee' : '' " *ngFor="let user of users; let i = index" >
+            {{user.first_name}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-8">
+      <div *ngIf="users[selectedIndex]">
+      <app-chat-room [user]="users[selectedIndex]" ></app-chat-room>
+      </div>
+      </div>
+  </div>
+  </div> -->
+
+<html *ngIf="!loading" style="overflow-y: hidden;">
+<body>
+<div class="container">
+  <div class="messaging">
+    <div class="row" style="height: 400px;">
+      <div class="col-md-4">
+        <br>
+        <h2 style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Chats:</h2>
+        <br>
+        <div
+          class="inbox_chat"
+          *ngFor="let user of users; let i = index">
+          <button style="box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19); width: 55%;border-radius: 8px; " (click)="openchat(i)">
+            <div>
+              <!-- <img
+                src="https://ptetutorials.com/images/user-profile.png"
+                alt="sunil"
+              /> -->
+              <div >
+              <img [src]="'http://localhost:8000/storage/media/default_profile.png'"  height="20px" width="20px">
+              </div>
+                <h3 style="font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: 4mm; " >
+                <span style="font-weight: bold;font-family: sans-serif;font-style: oblique;" *ngIf="user.type == 'User';else elseThera">Anonymous Patient {{user.id}}</span><ng-template #elseThera> Therapist {{ user.first_name }}
+                  {{ user.last_name }}</ng-template>                 <!-- <span class="chat_date">Dec 25</span> -->
+              </h3>
+              <!-- <p>Test, which is a new approach to have all solutions
+            astrology under one roof.</p> -->
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-8" style="overflow: auto;">
+        <div *ngIf="users[selectedIndex]">
+          <app-chat-room
+            [user]="users[selectedIndex]"
+          ></app-chat-room>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<ng-template #elseLoading>
+  <div>
+    <h1>Loading</h1>
+  </div>
+</ng-template>
+<!-- </div> -->

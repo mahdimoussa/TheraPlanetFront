@@ -1,0 +1,47 @@
+<div class="container" *ngIf="!document; else elseBlock">
+
+  <div class="container margin-vert-60">
+    <div class="form-group">
+      <h3>Please upload your ID and Licence photos and wait for our approval.</h3>
+      <h4>This process shall not take more than 24 hours.</h4>
+      <br>
+      <label for="licence_photo">Licence Photo</label>
+      <input
+
+        type="file"
+        id="licence_photo"
+        (change)="handleLicenceInput($event.target.files)"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="id_photo">Id Photo</label>
+      <input
+        type="file"
+        id="id_photo"
+        (change)="handleIdInput($event.target.files)"
+      />
+    </div>
+    <div class="form-group">
+      <label> Choose you specialization</label>
+      <select class="form-control" style="width:auto" name="type" [(ngModel)]="type">
+        <option value="General" selected="selected">General</option>
+        <option value="Occupational">Occupational Therapist</option>
+        <option value="Psycho">PsychoTherapist</option>
+        <option value="Physio">PhysioTherapist</option>
+        <option value="Speech">Speech Therapist</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" (click)="upload()">Submit</button>
+  </div>
+</div>
+
+
+<ng-template #elseBlock>
+  <div class="container margin-vert-60">
+    <h3 class="alert" style="font-weight: bold;">Files Uploaded! Please wait for admin confirmation!</h3>
+  </div>
+</ng-template>
+
+
+

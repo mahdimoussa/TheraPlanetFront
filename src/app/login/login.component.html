@@ -1,0 +1,36 @@
+<div style = "position:relative;margin-top: 100px; left:33.5%; top:2px"class="logo">
+  <img width="27%" height="27%" src="http://localhost:8000/storage/media/logo.png" alt="Logo" />
+</div>
+<br>
+<div>
+  <h2 style="position:relative; left:43%; top:2px">Login</h2>
+  <form style = "position:relative; left:23%; top:2px" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label style="font-style: italic; font-family: Verdana, Geneva, Tahoma, sans-serif ; " for="email">Email</label>
+      <input style="width:50%" id="email" type="text" formControlName="email" class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f?.email.errors }" />
+      <div *ngIf="submitted && f?.email.errors" class="invalid-feedback">
+        <div *ngIf="f.email.errors.required">Email is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label style="font-style: italic; font-family: Verdana, Geneva, Tahoma, sans-serif ; " for="password">Password</label>
+      <input style="width:50%"  id="password" type="password" formControlName="password" class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f?.password.errors }" />
+      <div *ngIf="submitted && f?.password.errors" class="invalid-feedback">
+        <div *ngIf="f.password.errors.required">Password is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Login
+      </button>
+      <a routerLink="/signup" class="btn btn-link">Register</a>
+    </div>
+    <div class="form-group">
+      <a style="margin:0%" routerLink="/forgetpassword" >Forgot Password ?</a>
+    </div>
+
+  </form>
+  </div>

@@ -1,0 +1,62 @@
+<!-- === BEGIN CONTENT === -->
+<div class="row margin-vert-30">
+  <!-- Main Column -->
+  <div *ngIf="!loading">
+    <div class="col-md-12">
+      <!-- Main Content -->
+      <div class="row margin-bottom-20">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="headline"><h2>Create Post</h2></div>
+        </div>
+      </div>
+      <br/>
+      <div class="row margin-bottom-20">
+        <div class="col-md-8 col-md-offset-2">
+        <textarea style="border: 0.5px solid ;
+        border-radius: 12px;"
+          rows="8"
+          class="form-control"
+          name="caption"
+          [(ngModel)]="caption"
+        ></textarea>
+        </div>
+      </div>
+      <div class="row margin-bottom-20">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="form-group">
+            <label>Tag</label>
+            <select  style="width: 30%;"class="form-control" name="tgs" [(ngModel)]="tagId">
+              <option *ngFor="let tag of tags" [value]="tag.id" >{{ tag.label }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row margin-bottom-20">
+        <div class="col-md-8 col-md-offset-2">
+          <label for="file">
+            <i class="fas fa-upload	"></i>
+            <input
+              type="file"
+              id="file"
+              style="display: none"
+              (change)="handleFileInput($event.target.files)"
+            />Upload a photo or a video.</label>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-2">
+        <p>
+          <button class="btn btn-primary" (click)="upload()" style="float: right; margin-top:-8% ;">
+            Create
+          </button>
+        </p>
+      </div>
+      <!-- End Contact Form -->
+      <!-- End Main Content -->
+    </div>
+  </div>
+  <div *ngIf="loading">
+    <h2>Loading...</h2>
+  </div>
+  <!-- End Main Column -->
+</div>

@@ -1,0 +1,342 @@
+<div class="row margin-vert-30" *ngIf="post">
+  <div *ngIf="!loading">
+    <!-- Main Column -->
+    <div class="col-md-9">
+      <div class="blog-post">
+        <div class="blog-item-header">
+          <div class="blog-post-date pull-left">
+            <span class="day"> {{ post.created_at | date: "dd" }}</span>
+            <span class="month"> {{ post.created_at | date: "MMM" }}</span>
+          </div>
+          <h2>
+            <a [href]="'/therapist/' + post.user.id"> {{ post.user.first_name }} {{ post.user.last_name }} </a>
+          </h2>
+        </div>
+        <div class="blog-post-details">
+          <!-- # of Likes -->
+          <div
+            class="blog-post-details-item blog-post-details-item-left user-icon"
+          >
+            <div
+              class="blog-post-details-item blog-post-details-item-left user-icon" style="padding: 0px;">
+              <a class="btn " style="padding: 0px;">
+                <i class="glyphicon glyphicon-thumbs-up"></i>
+              </a>
+              <a href="#"> {{ post.likes.length }} Likes</a>
+
+            </div>
+          </div>
+          <!-- End # of Likes -->
+          <!-- # of Comments -->
+          <div
+            class="blog-post-details-item blog-post-details-item-left blog-post-details-item-last comments-icon"
+          >
+            <a href="#">
+              <i class="fa fa-comments"></i>
+              {{ post.comments.length }} Comments
+            </a>
+          </div>
+          <!-- End # of Comments -->
+          <!-- Tags -->
+          <div
+            class="blog-post-details-item blog-post-details-item-left blog-post-details-tags tags-icon"
+          >
+            <i class="fa fa-tag"></i>
+            <a href="#" *ngFor="let tag of post.tags">{{ tag.label }}</a>
+          </div>
+          <!-- End Tags -->
+        </div>
+        <div class="blog-item">
+          <div class="clearfix"></div>
+          <div class="blog-post-body row margin-top-15">
+
+            <div *ngIf="post.media_url">
+              <div class="col-md-5">
+                <div *ngIf="fileExt == ( 'mp4' || 'MOV ' || 'WMV' || 'FLV' || 'AVI'); else elseImage">
+
+                  <video
+                    width="500px"
+                    height="500px"
+                    style="object-fit: contain"
+                    class="pull-left"
+                    controls
+                  >
+                    <source [src]="'http://localhost:8000/storage/media/' + post.media_url" type="video/mp4">
+                  </video>
+
+                </div>
+                <ng-template #elseImage>
+                  <img
+                    style="object-fit: contain"
+                    class="pull-left"
+                    [src]="'http://localhost:8000/storage/media/' + post.media_url"
+                    alt="thumb1"
+                  />
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <p>
+                {{ post.caption }}
+              </p>
+            </div>
+          </div>
+          <br/>
+          <div class="blog-item-footer">
+            <!-- About the Author -->
+            <div class="blog-author panel panel-default margin-bottom-30">
+              <div class="panel-heading">
+                <h3>About the Therapist</h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-2">
+
+                    <div *ngIf="post.user.profile_pic; else elseBlock ">
+                      <img
+                        class="pull-left"
+                        [src]="'http://localhost:8000/storage/media/' + post.user.profile_pic"
+                        alt="image1"
+                      />
+                      <div [ngClass]="post.user.status == 0? 'offline-status' : 'online-status' ">
+                      </div>
+                    </div>
+                    <ng-template #elseBlock>
+                      <img
+                        class="pull-left"
+                        [src]="'http://localhost:8000/storage/media/default_profile.png'"
+                        alt="image1"
+                      />
+                      <div [ngClass]="post.user.status == 0? 'offline-status' : 'online-status' ">
+                      </div>
+                    </ng-template>
+                  </div>
+
+                  <div class="col-md-10">
+                    <label
+                    >{{ post.user.first_name }} {{ post.user.last_name }}
+                    </label>
+                    <p>{{ post.user.biography }} </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End About the Author -->
+
+            <!-- Comments -->
+            <div
+              class="blog-recent-comments panel panel-default margin-bottom-30"
+            >
+              <div class="panel-heading">
+                <h3>Comments</h3>
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let comment of post.comments">
+                  <div class="row">
+                    <div class="col-md-2 profile-thumb">
+                      <div *ngIf="comment.user.profile_pic; else elseBlock ">
+                        <img
+                          class="pull-left"
+                          [src]="'http://localhost:8000/storage/media/' + comment.user.profile_pic"
+                          alt="image1"
+                        />
+                        <div [ngClass]="comment.user.status == 0? 'offline-status' : 'online-status' ">
+                        </div>
+                      </div>
+                      <ng-template #elseBlock>
+                        <img
+                          class="pull-left"
+                          [src]="'http://localhost:8000/storage/media/default_profile.png'"
+                          alt="image1"
+                        />
+                        <div  [ngClass]="comment.user.status == 0? 'offline-status' : 'online-status' ">
+                        </div>
+                      </ng-template>
+                    </div>
+                    <div class="col-md-10">
+                      <h4>
+                        {{ comment.user.first_name }} {{ comment.user.last_name }}
+                      </h4>
+                      <p>
+                        {{ comment.comment }}
+                      </p>
+                      <span class="date"
+                      ><i class="fa fa-clock-o"></i>
+                        {{
+                        comment.created_at | date: "EEEE, MMMM d, y, h:mm:ss a"
+                        }}</span
+                      >
+                      <br/>
+                      <button class="btn btn-primary" (click)="reply(comment.id)">
+                        Reply
+                      </button>
+                      <span *ngIf="comment.user.id == currentUser.id || currentUser.id == post.user.id">
+                        <button class="btn margin-horiz-10" (click)="deleteComment(comment.id)">
+                          Delete
+                        </button>
+                      </span>
+                      <hr/>
+                      <div
+                        class="row"
+                        *ngFor="let subcomment of comment.comments"
+                      >
+                        <div class="row">
+                          <div class="col-md-2 profile-thumb">
+                            <div *ngIf="subcomment?.user?.profile_pic; else elseBlock ">
+                              <img
+                                class="pull-left"
+                                [src]="'http://localhost:8000/storage/media/' + subcomment.user.profile_pic"
+                                alt="image1"
+                              />
+                              <div [ngClass]="subcomment?.user?.status == 0? 'offline-status' : 'online-status' ">
+                              </div>
+                            </div>
+                            <ng-template #elseBlock>
+                              <img
+                                class="pull-left"
+                                [src]="'http://localhost:8000/storage/media/default_profile.png'"
+                                alt="image1"
+                              />
+                              <div [ngClass]="subcomment?.user?.status == 0? 'offline-status' : 'online-status' ">
+                              </div>
+                            </ng-template>
+                          </div>
+                          <div class="col-md-10">
+                            <h4>
+                              {{ subcomment.user.first_name }}
+                              {{ subcomment.user.last_name }}
+                            </h4>
+                            <p>
+                              {{ subcomment.comment }}
+                            </p>
+                            <span class="date"
+                            ><i class="fa fa-clock-o"></i>
+                              {{
+                              subcomment.created_at
+                                | date: "EEEE, MMMM d, y, h:mm:ss a"
+                              }}</span
+                            >
+                            <br>
+                            <span *ngIf="subcomment.user.id == currentUser.id || currentUser.id == post.user.id">
+                              <button class="btn btn-danger" (click)="deleteSubComment(comment.id,subcomment.id)">
+                                Delete
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Comment Form -->
+                <li class="list-group-item">
+                  <div class="blog-comment-form">
+                    <div class="row margin-top-20">
+                      <div class="col-md-12">
+                        <div class="pull-left">
+                          <h3>Leave a <span *ngIf="replyTo == -1; else elseComment">Comment</span>
+                            <ng-template #elseComment>Reply</ng-template>
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row margin-top-20">
+                      <div class="col-md-12">
+                        <!--                      <form [formGroup]="loginForm" ">-->
+                        <div class="row margin-bottom-20">
+                          <div class="col-md-11 col-md-offset-0">
+                            <textarea
+                              [(ngModel)]="commentBody"
+                              class="form-control"
+                              rows="8"
+                            ></textarea>
+                          </div>
+                        </div>
+
+                        <p>
+                          <button class="btn btn-primary" type="submit" (click)="onSubmit()">
+                            Submit
+                          </button>
+                        </p>
+                        <!--                      </form>-->
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <!-- End Comment Form -->
+              </ul>
+            </div>
+            <!-- End Comments -->
+          </div>
+        </div>
+      </div>
+      <!-- End Blog Post -->
+    </div>
+    <!-- End Main Column -->
+    <!-- Side Column -->
+    <div class="col-md-3">
+      <!-- Blog Tags -->
+      <div class="blog-tags">
+        <h3>Tags</h3>
+        <ul class="blog-tags">
+          <li *ngFor="let tag of tags"><a href="#" class="blog-tag">{{tag.label}}</a></li>
+        </ul>
+      </div>
+      <!-- End Blog Tags -->
+      <!-- Recent Posts -->
+      <div class="recent-posts">
+        <h3>Recent Posts</h3>
+        <ul class="posts-list margin-top-10">
+          <div *ngFor="let post of recentPosts; let i =index">
+            <hr>
+            <li>
+
+              <div class="recent-post">
+                <a href="#">
+                  <div *ngIf="post.media_url">
+                    <div *ngIf="recentFileNames[i] == ( 'mp4' || 'MOV ' || 'WMV' || 'FLV' || 'AVI'); else elseImage">
+                      <video
+                        width="200px"
+                        height="200px"
+                        style="object-fit: contain"
+                        class="pull-left"
+                        controls
+                      >
+                        <source [src]="'http://localhost:8000/storage/media/' + post.media_url">
+                      </video>
+
+                    </div>
+                    <ng-template #elseImage>
+                      <img
+                        width="200px"
+                        height="200px"
+                        style="object-fit: contain"
+                        class="pull-left"
+                        [src]="'http://localhost:8000/storage/media/' + post.media_url"
+                        alt="thumb1"
+                      />
+                    </ng-template>
+                  </div>
+                </a>
+                <a href="#" class="posts-list-title">
+                  {{ (post.caption.length > 50) ? (post.caption | slice:0:400) + '....' : (post.caption) }}
+                </a>
+                <br/>
+                <span
+                  class="recent-post-date"> {{ post.created_at | date: "dd" }} {{ post.created_at | date: "MMM" }} </span>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+
+          </div>
+        </ul>
+      </div>
+      <!-- End Recent Posts -->
+      <!-- End Side Column -->
+    </div>
+  </div>
+  <div *ngIf="loading">
+    <h2>Loading...</h2>
+  </div>
+</div>

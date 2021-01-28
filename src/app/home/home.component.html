@@ -1,0 +1,206 @@
+<div class="row margin-vert-30">
+  <div class="row">
+    <div class="form-group col-md-5">
+      <input style="width: 70%;" type="text" class="form-control" placeholder="Search Posts" (keypress)="keyPress($event)"
+             [(ngModel)]="searchText">
+    </div>
+    <!-- <div class="col-md-3 margin-top-40">
+      <ng-select class="custom"  >
+      <ng-option value="post" >
+        By Post
+      </ng-option>
+      <ng-option value="therapist">
+        Therapist
+      </ng-option>
+    </ng-select></div>
+  </div> -->
+    <!-- Main Column -->
+    <div class="col-md-9 margin-vert-30">
+      <!-- Blog Post -->
+      <div
+        class="blog-post padding-bottom-20"
+        *ngFor="let post of posts; let i = index"
+      >
+        <!-- Blog Item Header -->
+        <div class="blog-item-header">
+          <!-- Date -->
+          <div class="blog-post-date pull-left">
+            <span class="day"> {{ post.created_at | date: "dd" }}</span>
+            <span class="month"> {{ post.created_at | date: "MMM" }}</span>
+          </div>
+          <!-- End Date -->
+          <!-- Title -->
+          <h2>
+            <a [href]="'/therapist/' + post.user.id"
+
+
+            > {{ post.user.first_name }} {{ post.user.last_name }}</a>
+
+
+          </h2>
+          <div class="clearfix"></div>
+          <!-- End Title -->
+        </div>
+        <!-- End Blog Item Header -->
+        <!-- Blog Item Details -->
+        <div class="blog-post-details">
+          <div
+            class="blog-post-details-item blog-post-details-item-left user-icon">
+            <a class="btn " style="padding: 0px;" (click)="like(post.id, i)">
+              <div *ngIf="post.liked">
+                <i class="glyphicon glyphicon-thumbs-up" style="color: #00b3ee"></i>
+              </div>
+              <div *ngIf="!post.liked">
+                <i class="glyphicon glyphicon-thumbs-up"></i>
+              </div>
+            </a>
+            <a> {{ post.likes_count }} Liked</a>
+
+          </div>
+
+
+          <!-- # of Comments -->
+          <div
+            class="blog-post-details-item blog-post-details-item-left blog-post-details-item-last comments-icon"
+          >
+            <a href="#">
+              <i class="fa fa-comments"></i>
+              {{ post.comments_count }} Comments
+            </a>
+          </div>
+          <!-- End # of Comments -->
+          <!-- Tags -->
+          <div
+            class="blog-post-details-item blog-post-details-item-left blog-post-details-tags tags-icon"
+          >
+            <i class="fa fa-tag"></i>
+            <a *ngFor="let tag of post.tags"> {{tag.label}}</a>
+          </div>
+          <!-- End Tags -->
+        </div>
+        <!-- End Blog Item Details -->
+        <!-- Blog Item Body -->
+        <div class="blog">
+          <div class="clearfix"></div>
+          <div class="blog-post-body row margin-top-15">
+            <div *ngIf="post.media_url">
+              <div class="col-md-5">
+                <div *ngIf="fileNames[i] == ( 'mp4' || 'MOV ' || 'WMV' || 'FLV' || 'AVI'); else elseImage">
+
+                  <video
+                    width="200px"
+                    height="200px"
+                    style="object-fit: contain"
+                    class="pull-left"
+                    controls
+                  >
+                    <source [src]="'http://localhost:8000/storage/media/' + post.media_url" type="video/mp4">
+                  </video>
+
+                </div>
+                <ng-template #elseImage>
+                  <img
+
+                    style="object-fit: contain"
+                    class="pull-left"
+                    [src]="'http://localhost:8000/storage/media/' + post.media_url"
+                    alt="thumb1"
+                  />
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <p>
+                {{ (post.caption.length > 50) ? (post.caption | slice:0:400) + '....' : (post.caption) }}
+              </p>
+              <!-- Read More -->
+              <a [href]="'/singlePost/' + post.id" class="btn btn-primary">
+                Read More <i class="icon-chevron-right readmore-icon"></i>
+              </a>
+              <a (click)="save(post.id, i)" style="margin: 10px;">
+              <span *ngIf="post.saved; else elseUnsave">
+                <i class="glyphicon glyphicon-floppy-saved"></i>
+                </span>
+                <ng-template #elseUnsave>
+                  <i class="glyphicon glyphicon-floppy-save"></i>
+                </ng-template>
+              </a>
+              <!-- End Read More -->
+            </div>
+          </div>
+        </div>
+        <!-- End Blog Item Body -->
+      </div>
+      <!-- End Blog Item -->
+      <!-- Pagination -->
+      <ul class="pagination">
+        <li><a (click)="pagination(firstIndex)">&laquo;</a></li>
+        <li *ngFor="let item of [].constructor(lastIndex); let i= index "
+            [class]=" currentIndex == (i+1) ? 'active' : ''"><a (click)="pagination(i+1)">{{i + 1}}</a></li>
+        <li><a (click)="pagination(lastIndex)">&raquo;</a></li>
+      </ul>
+      <!-- End Pagination -->
+    </div>
+    <!-- End Main Column -->
+    <!-- Side Column -->
+    <div class="col-md-3">
+      <!-- Blog Tags -->
+      <div class="blog-tags">
+        <h3>Tags</h3>
+        <ul class="blog-tags">
+          <li *ngFor="let tag of tags"><a (click)="getPostsByTag(tag.id)" class="blog-tag">{{tag.label}}</a></li>
+        </ul>
+      </div>
+      <!-- End Blog Tags -->
+      <!-- Recent Posts -->
+      <div class="recent-posts">
+        <h3>Recent Posts</h3>
+        <ul class="posts-list margin-top-10">
+          <div *ngFor="let post of recentPosts; let i =index">
+            <hr>
+            <li>
+
+              <div class="recent-post">
+                <a href="#">
+                  <div *ngIf="post.media_url">
+                    <div *ngIf="recentFileNames[i] == ( 'mp4' || 'MOV ' || 'WMV' || 'FLV' || 'AVI'); else elseImage">
+                      <video
+                        width="200px"
+                        height="200px"
+                        style="object-fit: contain"
+                        class="pull-left"
+                        controls
+                      >
+                        <source [src]="'http://localhost:8000/storage/media/' + post.media_url">
+                      </video>
+
+                    </div>
+                    <ng-template #elseImage>
+                      <img
+
+                        style="object-fit: contain"
+                        class="pull-left"
+                        [src]="'http://localhost:8000/storage/media/' + post.media_url"
+                        alt="thumb1"
+                      />
+                    </ng-template>
+                  </div>
+                </a>
+                <a href="#"
+                   class="posts-list-title">
+                  {{ (post.caption.length > 50) ? (post.caption | slice:0:100) + '....' : (post.caption) }}
+                </a>
+                <br/>
+                <span
+                  class="recent-post-date"> {{ post.created_at | date: "dd" }} {{ post.created_at | date: "MMM" }} </span>
+              </div>
+              <div class="clearfix"></div>
+            </li>
+
+          </div>
+        </ul>
+      </div>
+      <!-- End Recent Posts -->
+    </div>
+    <!-- End Side Column -->
+  </div>

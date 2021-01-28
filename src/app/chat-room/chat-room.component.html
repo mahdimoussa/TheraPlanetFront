@@ -1,0 +1,54 @@
+<br>
+<br>
+<div #scrollMe [scrollTop]="scrollMe.scrollHeight">
+  <div class="chatbody">
+    <div class="panel panel-primary">
+      <div class="panel-heading top-bar">
+        <div class="col-md-8 col-xs-8">
+          <h3 class="panel-title"><span class="glyphicon glyphicon-comment"><span *ngIf="user.type == 'User';else elseThera">      Anonymous {{user.id}}</span><ng-template #elseThera> {{ user.first_name }}{{ user.last_name }}</ng-template> </span></h3>
+          <div style="margin-right: 45%; margin-bottom: 3px;" [ngClass]="user.status == 0? 'offline-status' : 'online-status' ">
+          </div>
+        </div>
+      </div>
+      <div class="panel-body msg_container_base">
+
+        <div *ngFor="let message of messages">
+          <div *ngIf="myMessages(message.user_id)">
+            <div class="row msg_container base_sent">
+              <div class="messages msg_sent">
+                <div class="col-md-10 col-xs-10">
+                  {{message.message}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="currentUser.id != message.user_id" >
+            <div class="row msg_container base_receive">
+              <div class="messages msg_receive">
+                <div class="col-md-10 col-xs-10">
+                  {{message.message}}
+                </div>
+              </div>
+            </div>
+          </div>
+<!--          <di [ngClass]="message.user_id == currentUser?.id ?  '' : ''">-->
+<!--            <div [ngClass]="message.user_id == currentUser?.id ?  '' : ''">-->
+<!--              <div [ngClass]="message.user_id == currentUser?.id ? '' : ''">-->
+<!--                {{message.message}}-->
+<!--              </div>-->
+<!--              <span class="time_date"> {{(message.timestamp.toDate().toString().slice(0, -42))}}</span>-->
+<!--            </div>-->
+<!--          </di>-->
+        </div>
+      </div>
+      <div>
+        <div style="position: sticky; bottom: 0;padding:5px;background-color:#e5e5e5">
+          <input (keyup)="handleOnKeyUp($event)" style="border-radius: 8px;height: 45px;width: 86%;" placeholder="Type Message" [(ngModel)]="message">
+          <button id="send-message-button" style="border-radius: 8px;height: 43px;margin-bottom: 5px;margin-left: 5px;" (click)="sendMessage()" class="btn btn-primary">
+         Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
